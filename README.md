@@ -41,8 +41,8 @@ npmScopes:
 5. Click "Register application"
 6. Copy the **Client ID** - you'll need this for the configuration
 
-**Important**: Make sure you create an **OAuth App** (not a GitHub App). The
-*Device Flow authentication requires an OAuth App.
+> **Important**: Make sure you create an **OAuth App** (not a GitHub App). The
+> *Device Flow* authentication requires an OAuth App.
 
 ## How it works
 

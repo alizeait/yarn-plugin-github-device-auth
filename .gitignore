@@ -27,3 +27,4 @@ playwright-report
 .yarn
 
 !.yarn/cachehumbs.db
+.yarnrc.local.yml
