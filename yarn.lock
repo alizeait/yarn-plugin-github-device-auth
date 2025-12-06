@@ -1003,13 +1003,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@volvo-cars/market-sites@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "@volvo-cars/market-sites@npm:3.0.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40volvo-cars%2Fmarket-sites%2F3.0.0%2Fdace76569ecaa69b30f2f4e419d41aef048b80d2"
-  checksum: 10c0/84fb16a8b749c97ba25daf88135f5dc03f2bdac3aca6a01d2db1b6ac5f5c4a143b8b9ab941976cb32a9500453661660d681235c855162990c7586b1e3fee2267
-  languageName: node
-  linkType: hard
-
 "@yarnpkg/builder@npm:^4.2.3":
   version: 4.2.3
   resolution: "@yarnpkg/builder@npm:4.2.3"
@@ -4290,7 +4283,6 @@ __metadata:
     "@clack/prompts": "npm:^1.0.0-alpha.7"
     "@types/copy-paste": "npm:^2.1.0"
     "@types/node": "npm:^22.9.0"
-    "@volvo-cars/market-sites": "npm:^3.0.0"
     "@yarnpkg/builder": "npm:^4.2.3"
     "@yarnpkg/core": "npm:^4.5.0"
     "@yarnpkg/fslib": "npm:^3.1.4"

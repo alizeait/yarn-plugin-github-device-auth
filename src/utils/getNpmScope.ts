@@ -6,15 +6,19 @@ import type { Configuration } from '@yarnpkg/core';
  * Exits with an error if not configured.
  */
 export function getNpmScope(configuration: Configuration): string {
-  const scope = configuration.get('githubDeviceAuthScope') as
-    | string
+  const config = configuration.get('githubDeviceAuth') as
+    | Map<string, string>
     | undefined;
+
+  const scope = config?.get('scope');
 
   if (!scope) {
     p.log.error(
       'GitHub device authentication scope is not configured.\n' +
-        'Please add "githubDeviceAuthScope" to your .yarnrc.yml file.\n' +
-        'Example: githubDeviceAuthScope: "volvo-cars"',
+        'Please add "githubDeviceAuth.scope" to your .yarnrc.yml file.\n' +
+        'Example:\n' +
+        '  githubDeviceAuth:\n' +
+        "    scope: 'your-org'",
     );
     process.exit(1);
   }

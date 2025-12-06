@@ -13,17 +13,17 @@ import type { AccessTokenResponse } from '../types';
 function createMockConfiguration(
   overrides: Partial<{
     projectCwd: string;
-    githubDeviceAuthScope: string;
+    scope: string;
   }> = {},
 ): Configuration {
-  const { projectCwd, githubDeviceAuthScope = 'test-scope' } = overrides;
+  const { projectCwd, scope = 'test-scope' } = overrides;
 
   return {
     projectCwd: projectCwd
       ? (npath.toPortablePath(projectCwd) as PortablePath)
       : null,
     get: (key: string) => {
-      if (key === 'githubDeviceAuthScope') return githubDeviceAuthScope;
+      if (key === 'githubDeviceAuth') return new Map([['clientId', ''], ['scope', scope]]);
       return undefined;
     },
   } as unknown as Configuration;
@@ -124,7 +124,7 @@ describe('getNpmAuthenticationHeader', () => {
         {
           configuration: createMockConfiguration({
             projectCwd: tempDir,
-            githubDeviceAuthScope: 'my-org',
+            scope: 'my-org',
           }),
           ident: createMockIdent('other-org'),
         },
@@ -167,7 +167,7 @@ describe('getNpmAuthenticationHeader', () => {
         {
           configuration: createMockConfiguration({
             projectCwd: tempDir,
-            githubDeviceAuthScope: 'test-scope',
+            scope: 'test-scope',
           }),
         },
       );
@@ -184,7 +184,7 @@ describe('getNpmAuthenticationHeader', () => {
         {
           configuration: createMockConfiguration({
             projectCwd: tempDir,
-            githubDeviceAuthScope: 'test-scope',
+            scope: 'test-scope',
           }),
         },
       );
@@ -212,7 +212,7 @@ describe('getNpmAuthenticationHeader', () => {
         {
           configuration: createMockConfiguration({
             projectCwd: tempDir,
-            githubDeviceAuthScope: 'my-org',
+            scope: 'my-org',
           }),
           ident: createMockIdent('my-org'),
         },
