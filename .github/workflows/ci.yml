@@ -24,19 +24,19 @@ jobs:
           corepack enable
 
       - name: Install Dependencies
-        run: pnpm install
+        run: yarn install --frozen-lockfile
 
       - name: Lint
-        run: pnpm lint
+        run: yarn lint
 
       - name: Type Check
-        run: pnpm check-types
+        run: yarn check-types
 
       - name: Format Check
-        run: pnpm format:check
+        run: yarn format:check
 
       - name: Test
-        run: pnpm test
+        run: yarn test
 
       - name: Build
-        run: pnpm build
+        run: yarn build

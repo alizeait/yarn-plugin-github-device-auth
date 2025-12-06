@@ -2,44 +2,40 @@
   "name": "yarn-plugin-github-device-auth",
   "description": "Automatically authenticate GitHub packages in Yarn with GitHub Device Flow ",
   "version": "0.0.0",
-  "author": "",
+  "author": "alizeait",
   "license": "MIT",
-  "type": "module",
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    }
-  },
-  "files": [
-    "dist"
-  ],
+  "main": "./src/index.ts",
   "scripts": {
-    "build": "tsup",
+    "build": "builder build plugin",
+    "build:dev": "builder build plugin --no-minify",
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "oxlint",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "check-types": "tsc --noEmit",
-    "version-packages": "changeset version",
-    "release": "pnpm build && changeset publish"
+    "check-types": "tsc --noEmit"
   },
   "keywords": [],
   "devDependencies": {
-    "@changesets/cli": "^2.29.7",
     "@types/node": "^22.9.0",
+    "@yarnpkg/builder": "^4.2.3",
     "oxlint": "^1.24.0",
     "prettier": "^3.6.2",
-    "tsup": "^8.5.0",
     "typescript": "^5.9.3",
     "vitest": "^4.0.1"
+  },
+  "dependencies": {
+    "@clack/prompts": "^1.0.0-alpha.7",
+    "@types/copy-paste": "^2.1.0",
+    "@volvo-cars/market-sites": "^3.0.0",
+    "@yarnpkg/core": "^4.5.0",
+    "@yarnpkg/fslib": "^3.1.4",
+    "copy-paste": "^2.2.0",
+    "open": "^8.4.2",
+    "picocolors": "^1.1.1"
   },
   "engines": {
     "node": ">=20.0.0"
   },
-  "packageManager": "pnpm@10.19.0+sha512.c9fc7236e92adf5c8af42fd5bf1612df99c2ceb62f27047032f4720b33f8eacdde311865e91c411f2774f618d82f320808ecb51718bfa82c060c4ba7c76a32b8"
+  "packageManager": "yarn@4.10.3"
 }
