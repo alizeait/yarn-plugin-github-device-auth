@@ -6,9 +6,7 @@ export function runInstall(cwd: string) {
   const isWin = os.platform() === 'win32';
 
   const command = process.argv;
-  let yarnIndex = command.findIndex((c) =>
-    c.includes(`yarn${path.sep}`),
-  );
+  let yarnIndex = command.findIndex((c) => c.includes(`yarn${path.sep}`));
 
   yarnIndex = yarnIndex === -1 ? 2 : yarnIndex;
 

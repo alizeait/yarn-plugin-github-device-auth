@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
@@ -8,22 +8,27 @@ import { PortablePath, npath } from '@yarnpkg/fslib';
 
 import { getNpmAuthenticationHeader } from '../hooks/getNpmAuthenticationHeader';
 import { resetDeviceFlowCache } from '../utils';
+import * as cachePathModule from '../utils/getCachePath';
 import type { AccessTokenResponse } from '../types';
 
 function createMockConfiguration(
   overrides: Partial<{
     projectCwd: string;
-    githubDeviceAuthScope: string;
+    scope: string;
   }> = {},
 ): Configuration {
-  const { projectCwd, githubDeviceAuthScope = 'test-scope' } = overrides;
+  const { projectCwd, scope = 'test-scope' } = overrides;
 
   return {
     projectCwd: projectCwd
       ? (npath.toPortablePath(projectCwd) as PortablePath)
       : null,
     get: (key: string) => {
-      if (key === 'githubDeviceAuthScope') return githubDeviceAuthScope;
+      if (key === 'githubDeviceAuth')
+        return new Map([
+          ['clientId', ''],
+          ['scope', scope],
+        ]);
       return undefined;
     },
   } as unknown as Configuration;
@@ -33,19 +38,12 @@ function createMockIdent(scope: string): Ident {
   return { scope, name: 'some-package' } as Ident;
 }
 
-function getCachePathForProject(projectPath: string): string {
+function getCachePathForTest(tempDir: string, projectPath: string): string {
   const hash = createHash('sha256')
     .update(projectPath)
     .digest('hex')
     .substring(0, 16);
-  return path.join(
-    os.homedir(),
-    '.config',
-    'yarn',
-    'github-device-auth',
-    hash,
-    'device-flow.json',
-  );
+  return path.join(tempDir, '.cache', hash, 'device-flow.json');
 }
 
 describe('getNpmAuthenticationHeader', () => {
@@ -55,11 +53,18 @@ describe('getNpmAuthenticationHeader', () => {
   beforeEach(async () => {
     resetDeviceFlowCache();
     tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'yarn-plugin-test-'));
+
+    // Mock getCachePath to use temp directory instead of real home dir
+    vi.spyOn(cachePathModule, 'getCachePath').mockImplementation(
+      (projectPath: string) => getCachePathForTest(tempDir, projectPath),
+    );
+
     originalCI = process.env.CI;
     delete process.env.CI;
   });
 
   afterEach(async () => {
+    vi.restoreAllMocks();
     if (originalCI !== undefined) {
       process.env.CI = originalCI;
     } else {
@@ -124,7 +129,7 @@ describe('getNpmAuthenticationHeader', () => {
         {
           configuration: createMockConfiguration({
             projectCwd: tempDir,
-            githubDeviceAuthScope: 'my-org',
+            scope: 'my-org',
           }),
           ident: createMockIdent('other-org'),
         },
@@ -150,7 +155,7 @@ describe('getNpmAuthenticationHeader', () => {
 
   describe('when cache exists with valid token', () => {
     it('returns Bearer token from cache', async () => {
-      const cachePath = getCachePathForProject(tempDir);
+      const cachePath = getCachePathForTest(tempDir, tempDir);
       await fs.mkdir(path.dirname(cachePath), { recursive: true });
 
       const cacheData: AccessTokenResponse = {
@@ -167,7 +172,7 @@ describe('getNpmAuthenticationHeader', () => {
         {
           configuration: createMockConfiguration({
             projectCwd: tempDir,
-            githubDeviceAuthScope: 'test-scope',
+            scope: 'test-scope',
           }),
         },
       );
@@ -184,7 +189,7 @@ describe('getNpmAuthenticationHeader', () => {
         {
           configuration: createMockConfiguration({
             projectCwd: tempDir,
-            githubDeviceAuthScope: 'test-scope',
+            scope: 'test-scope',
           }),
         },
       );
@@ -195,7 +200,7 @@ describe('getNpmAuthenticationHeader', () => {
 
   describe('when ident scope matches configured scope', () => {
     it('returns Bearer token from cache', async () => {
-      const cachePath = getCachePathForProject(tempDir);
+      const cachePath = getCachePathForTest(tempDir, tempDir);
       await fs.mkdir(path.dirname(cachePath), { recursive: true });
 
       const cacheData: AccessTokenResponse = {
@@ -212,7 +217,7 @@ describe('getNpmAuthenticationHeader', () => {
         {
           configuration: createMockConfiguration({
             projectCwd: tempDir,
-            githubDeviceAuthScope: 'my-org',
+            scope: 'my-org',
           }),
           ident: createMockIdent('my-org'),
         },

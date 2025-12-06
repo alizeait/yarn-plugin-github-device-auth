@@ -29,15 +29,15 @@ function createMockConfiguration(
   overrides: Partial<{
     projectCwd: string;
     startingCwd: string;
-    githubDeviceAuthScope: string;
-    githubDeviceOAuthAppClientId: string;
+    scope: string;
+    clientId: string;
   }> = {},
 ): Configuration {
   const {
     projectCwd,
     startingCwd = projectCwd,
-    githubDeviceAuthScope = 'test-scope',
-    githubDeviceOAuthAppClientId = 'test-client-id',
+    scope = 'test-scope',
+    clientId = 'test-client-id',
   } = overrides;
 
   return {
@@ -48,9 +48,11 @@ function createMockConfiguration(
       ? (npath.toPortablePath(startingCwd) as PortablePath)
       : ('' as PortablePath),
     get: (key: string) => {
-      if (key === 'githubDeviceAuthScope') return githubDeviceAuthScope;
-      if (key === 'githubDeviceOAuthAppClientId')
-        return githubDeviceOAuthAppClientId;
+      if (key === 'githubDeviceAuth')
+        return new Map([
+          ['clientId', clientId],
+          ['scope', scope],
+        ]);
       if (key === 'npmScopes') return new Map();
       return undefined;
     },
@@ -61,8 +63,8 @@ function createMockInfo(
   overrides: Partial<{
     projectCwd: string;
     target: string;
-    githubDeviceAuthScope: string;
-    githubDeviceOAuthAppClientId: string;
+    scope: string;
+    clientId: string;
   }> = {},
 ) {
   const { projectCwd, target = 'https://npm.pkg.github.com/@test-scope/pkg' } =

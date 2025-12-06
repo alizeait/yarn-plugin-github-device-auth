@@ -1,9 +1,4 @@
-import type {
-  Configuration,
-  Hooks,
-  Ident,
-  SettingsDefinition,
-} from '@yarnpkg/core';
+import type { Configuration, Hooks, Ident } from '@yarnpkg/core';
 
 export interface DeviceCodeResponse {
   device_code: string;
@@ -19,11 +14,6 @@ export interface AccessTokenResponse {
   scope: string;
   timestamp: number;
 }
-
-export type SimpleSettingsDefinition = Extract<
-  SettingsDefinition,
-  { default: any }
->;
 
 export type ExtendedHooks = Hooks & {
   getNpmAuthenticationHeader?: (

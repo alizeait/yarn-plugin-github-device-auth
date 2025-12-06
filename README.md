@@ -18,9 +18,9 @@ yarn plugin import https://raw.githubusercontent.com/alizeait/yarn-plugin-github
 Add the following to your `.yarnrc.yml`:
 
 ```yaml
-
-githubDeviceOAuthAppClientId: 'your-oauth-app-client-id' # See below to create an OAuth App
-githubDeviceAuthScope: 'your-org'
+githubDeviceAuth:
+  clientId: 'your-oauth-app-client-id' # See below to create an OAuth App
+  scope: 'your-org'
 
 npmScopes:
   your-org:
