@@ -1,9 +1,6 @@
 import type { Configuration, Ident } from '@yarnpkg/core';
 import { npath } from '@yarnpkg/fslib';
-import {
-  getNpmScope,
-  getDeviceFlowCache,
-} from '../utils';
+import { getNpmScope, getDeviceFlowCache } from '../utils';
 
 /**
  * This hook is called by plugin-npm for every npm registry request that needs authentication.

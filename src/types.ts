@@ -1,8 +1,4 @@
-import type {
-  Configuration,
-  Hooks,
-  Ident,
-} from '@yarnpkg/core';
+import type { Configuration, Hooks, Ident } from '@yarnpkg/core';
 
 export interface DeviceCodeResponse {
   device_code: string;

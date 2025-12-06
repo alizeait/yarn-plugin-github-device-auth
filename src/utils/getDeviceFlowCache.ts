@@ -4,7 +4,9 @@ import { getCachePath } from './getCachePath';
 
 let deviceFlowCache: AccessTokenResponse | null = null;
 
-export async function getDeviceFlowCache(cwd: string): Promise<AccessTokenResponse | null> {
+export async function getDeviceFlowCache(
+  cwd: string,
+): Promise<AccessTokenResponse | null> {
   if (deviceFlowCache) {
     return deviceFlowCache;
   }

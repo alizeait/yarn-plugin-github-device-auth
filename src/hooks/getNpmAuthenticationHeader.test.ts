@@ -23,7 +23,11 @@ function createMockConfiguration(
       ? (npath.toPortablePath(projectCwd) as PortablePath)
       : null,
     get: (key: string) => {
-      if (key === 'githubDeviceAuth') return new Map([['clientId', ''], ['scope', scope]]);
+      if (key === 'githubDeviceAuth')
+        return new Map([
+          ['clientId', ''],
+          ['scope', scope],
+        ]);
       return undefined;
     },
   } as unknown as Configuration;

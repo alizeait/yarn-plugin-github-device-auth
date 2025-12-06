@@ -1,7 +1,6 @@
 import { SettingsType } from '@yarnpkg/core';
 import type { SettingsDefinition } from '@yarnpkg/core';
 
-
 /**
  * Plugin configuration settings for .yarnrc.yml
  *
